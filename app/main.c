@@ -44,7 +44,7 @@ int main() {
       }
       printf("\n");
     } else if (strcmp(commandName, "type") == 0) {
-      char* builtin_commands[37] = {
+      char* builtin_commands[] = {
         "break",
         "continue",
         "eval",
@@ -62,6 +62,7 @@ int main() {
         "times",
         "trap",
         "typeset",
+        "type",
         "unset",
         "Regular",
         "alias",
@@ -90,7 +91,7 @@ int main() {
       }
 
       int found = 0;
-      for (int i=0; i<37;i++) {
+      for (int i=0; i<sizeof(builtin_commands);i++) {
         if (strcmp(first_arg, builtin_commands[i]) == 0)
         {
           found = 1;
