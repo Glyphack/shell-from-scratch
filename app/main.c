@@ -101,7 +101,7 @@ int main() {
       if (found == 1) {
         printf("%s is a shell builtin\n", first_arg);
       } else {
-        printf("%s: command not found\n", first_arg);
+        printf("%s: not found\n", first_arg);
       }
     } else {
       printf("%s: command not found\n", input);
