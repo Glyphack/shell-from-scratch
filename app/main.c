@@ -18,7 +18,8 @@ int main() {
       }
     }
 
-    char* commandName = strtok(input, " ");
+    char* delim = " ";
+    char* commandName = strtok(input,delim );
 
     if (commandName == NULL) {
       return 1;
@@ -30,10 +31,22 @@ int main() {
         return 1;
       }
       return atoi(exitValue);
+    } else if (strcmp(commandName, "echo") == 0) {
+      int first = 1;
+      char* token = strtok(NULL, delim);
+      while (token != NULL) {
+        if (first == 0) {
+          printf(" ");
+        }
+        printf("%s", token);
+        token = strtok(NULL, delim);
+        first = 0;
+      }
+      printf("\n");
     } else {
     printf("%s: command not found\n", input);
-    fflush(stdout);
     }
+    fflush(stdout);
   }
   return 0;
 }
