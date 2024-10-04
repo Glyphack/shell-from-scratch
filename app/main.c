@@ -43,11 +43,45 @@ int main() {
         first = 0;
       }
       printf("\n");
-    } else if (strcmp(commandName, "type")) {
-      char* builtin_commands[] = {
+    } else if (strcmp(commandName, "type") == 0) {
+      char* builtin_commands[37] = {
         "break",
         "continue",
         "eval",
+        "break",
+        "continue",
+        "eval",
+        "exec",
+        "exit",
+        "export",
+        "newgrp",
+        "readonly",
+        "return",
+        "set",
+        "shift",
+        "times",
+        "trap",
+        "typeset",
+        "unset",
+        "Regular",
+        "alias",
+        "bg",
+        "cd",
+        "echo",
+        "fc",
+        "fg",
+        "getopts",
+        "jobs",
+        "kill",
+        "let",
+        "print",
+        "pwd",
+        "read",
+        "ulimit",
+        "umask",
+        "unalias",
+        "wait",
+        "whence",
       };
 
       char* first_arg = strtok(NULL, delim);
@@ -56,19 +90,18 @@ int main() {
       }
 
       int found = 0;
-      for (int i=0; i<3;i++) {
-        if (strcmp(first_arg, builtin_commands[i]))
+      for (int i=0; i<37;i++) {
+        if (strcmp(first_arg, builtin_commands[i]) == 0)
         {
           found = 1;
         }
       }
 
       if (found == 1) {
-        printf("found");
+        printf("found\n");
       } else {
-        printf("not found");
+        printf("not found\n");
       }
-
     } else {
     printf("%s: command not found\n", input);
     }
