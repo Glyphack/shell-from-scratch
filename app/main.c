@@ -1,12 +1,23 @@
 #include <stdio.h>
 
 int main() {
-  printf("$ ");
-  fflush(stdout);
+  while (1) {
+    printf("$ ");
+    fflush(stdout);
 
-  char input[100];
-  fgets(input, 100, stdin);
+    int commandLen = 100;
+    char input[commandLen];
+    fgets(input, commandLen, stdin);
 
-  printf("%s: command not found", input);
+    for (int i=0;i<commandLen;i++) {
+      char ch = input[i];
+      if (ch == '\n') {
+        input[i] = 0;
+      }
+    }
+
+    printf("%s: command not found\n", input);
+    fflush(stdout);
+  }
   return 0;
 }
