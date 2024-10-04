@@ -98,9 +98,9 @@ int main() {
       }
 
       if (found == 1) {
-        printf("found\n");
+        printf("%s is a shell builtin\n", first_arg);
       } else {
-        printf("not found\n");
+        printf("%s: command not found\n", first_arg);
       }
     } else {
     printf("%s: command not found\n", input);
