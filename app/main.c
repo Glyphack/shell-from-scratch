@@ -43,6 +43,32 @@ int main() {
         first = 0;
       }
       printf("\n");
+    } else if (strcmp(commandName, "type")) {
+      char* builtin_commands[] = {
+        "break",
+        "continue",
+        "eval",
+      };
+
+      char* first_arg = strtok(NULL, delim);
+      if (first_arg == NULL) {
+        return 1;
+      }
+
+      int found = 0;
+      for (int i=0; i<3;i++) {
+        if (strcmp(first_arg, builtin_commands[i]))
+        {
+          found = 1;
+        }
+      }
+
+      if (found == 1) {
+        printf("found");
+      } else {
+        printf("not found");
+      }
+
     } else {
     printf("%s: command not found\n", input);
     }
