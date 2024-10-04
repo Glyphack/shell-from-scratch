@@ -1,4 +1,6 @@
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int main() {
   while (1) {
@@ -16,8 +18,22 @@ int main() {
       }
     }
 
+    char* commandName = strtok(input, " ");
+
+    if (commandName == NULL) {
+      return 1;
+    }
+
+    if (strcmp(commandName, "exit") == 0) {
+      char * exitValue = strtok(NULL, " ");
+      if (exitValue == NULL) {
+        return 1;
+      }
+      return atoi(exitValue);
+    } else {
     printf("%s: command not found\n", input);
     fflush(stdout);
+    }
   }
   return 0;
 }
