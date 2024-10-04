@@ -91,7 +91,7 @@ int main() {
       }
 
       int found = 0;
-      for (int i=0; i<sizeof(builtin_commands);i++) {
+      for (int i=0; i<38;i++) {
         if (strcmp(first_arg, builtin_commands[i]) == 0)
         {
           found = 1;
@@ -104,7 +104,7 @@ int main() {
         printf("%s: command not found\n", first_arg);
       }
     } else {
-    printf("%s: command not found\n", input);
+      printf("%s: command not found\n", input);
     }
     fflush(stdout);
   }
