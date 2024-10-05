@@ -123,6 +123,7 @@ int main() {
 
       printf("%s: not found\n", first_arg);
     } else {
+      int found = 0;
       if (path_count > 0) {
         DIR *dir;
         struct dirent *dp;
@@ -146,12 +147,13 @@ int main() {
                 token = strtok(NULL, delim);
               }
               int status = system(newCommand);
+              found = 1;
             }
           }
           closedir(dir);
         }
-        continue;
       }
+      if (found==1) continue;
       printf("%s: command not found\n", input);
     }
     fflush(stdout);
