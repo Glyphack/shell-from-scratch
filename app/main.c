@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <dirent.h>
 #include <libgen.h>
 #include <stdio.h>
@@ -83,6 +84,7 @@ int main() {
           if ((dir = opendir(curr_path)) == NULL) {
             printf("reading %s ", curr_path);
             perror("cannot open");
+            fflush(stdout);
             exit(1);
           }
 
