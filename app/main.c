@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <dirent.h>
 #include <libgen.h>
 #include <stdio.h>
