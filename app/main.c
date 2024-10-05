@@ -123,6 +123,36 @@ int main() {
 
       printf("%s: not found\n", first_arg);
     } else {
+      if (path_count > 0) {
+        DIR *dir;
+        struct dirent *dp;
+        for (int i=0;i<path_count;i++) {
+          curr_path = paths[i];
+          if ((dir = opendir(curr_path)) == NULL) {
+            continue;
+          }
+
+
+          while ((dp = readdir(dir)) != NULL) {
+            if (strcmp(commandName, dp->d_name) == 0) {
+              printf("%s is %s/%s\n", commandName, curr_path, dp->d_name);
+              char newCommand[commandLen];
+              strcpy(newCommand, curr_path);
+              strcat(newCommand, "/");
+              strcat(newCommand, dp->d_name);
+              char *token = strtok(NULL, delim);
+              while (token != NULL) {
+                strcat(newCommand, " ");
+                strcat(newCommand, token);
+                token = strtok(NULL, delim);
+              }
+              int status = system(newCommand);
+            }
+          }
+          closedir(dir);
+        }
+        continue;
+      }
       printf("%s: command not found\n", input);
     }
     fflush(stdout);
