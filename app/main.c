@@ -81,7 +81,8 @@ int main() {
           DIR *dir;
           struct dirent *dp;
           if ((dir = opendir(curr_path)) == NULL) {
-            perror("Cannot open .");
+            printf("reading %s ", curr_path);
+            perror("cannot open");
             exit(1);
           }
 
