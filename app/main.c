@@ -87,6 +87,11 @@ int main() {
         exit(1);
 
       printf("%s\n", ptr);
+    } else if (strcmp(commandName, "cd") == 0) {
+      char *location = strtok(NULL, " ");
+      if (location == NULL) exit(1);
+      int status = chdir(location);
+      if (status ==! 0) exit(status);
     } else if (strcmp(commandName, "type") == 0) {
 
       char *first_arg = strtok(NULL, delim);
