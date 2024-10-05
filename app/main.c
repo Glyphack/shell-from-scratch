@@ -91,7 +91,9 @@ int main() {
       char *location = strtok(NULL, " ");
       if (location == NULL) exit(1);
       int status = chdir(location);
-      if (status ==! 0) exit(status);
+    if (status != 0) {
+        printf("cd: %s: No such file or directory\n",location);
+    }
     } else if (strcmp(commandName, "type") == 0) {
 
       char *first_arg = strtok(NULL, delim);
@@ -137,7 +139,7 @@ int main() {
 
       printf("%s: not found\n", first_arg);
     } else {
-      int found = 0;
+      char *foundCommand;
       if (path_count > 0) {
         DIR *dir;
         struct dirent *dp;
@@ -154,20 +156,25 @@ int main() {
               strcpy(newCommand, curr_path);
               strcat(newCommand, "/");
               strcat(newCommand, dp->d_name);
-              char *token = strtok(NULL, delim);
-              while (token != NULL) {
-                strcat(newCommand, " ");
-                strcat(newCommand, token);
-                token = strtok(NULL, delim);
+              foundCommand = malloc(strlen(newCommand) + 1);
+              if (foundCommand != NULL) {
+                  strcpy(foundCommand, newCommand);
               }
-              int status = system(newCommand);
-              found = 1;
             }
           }
           closedir(dir);
         }
       }
-      if (found==1) continue;
+      if (foundCommand != 0){
+        char *token = strtok(NULL, delim);
+        while (token != NULL) {
+          strcat(foundCommand, " ");
+          strcat(foundCommand, token);
+          token = strtok(NULL, delim);
+        }
+        int status = system(foundCommand);
+        continue;
+      }
       printf("%s: command not found\n", input);
     }
     fflush(stdout);
