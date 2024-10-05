@@ -1,4 +1,5 @@
 #include <dirent.h>
+#include <unistd.h>
 #include <libgen.h>
 #include <errno.h>
 #include <stdio.h>
@@ -78,6 +79,16 @@ int main() {
         first = 0;
       }
       printf("\n");
+    } else if (strcmp(commandName, "pwd") == 0) {
+      int size = pathconf(".", _PC_PATH_MAX);
+      char *pwd = malloc(size + 1) ;
+      if (pwd == NULL)
+        exit(1);
+      char *ptr = getcwd(pwd, (size_t)size);
+      if (ptr == NULL)
+        exit(1);
+
+      printf("%s\n", ptr);
     } else if (strcmp(commandName, "type") == 0) {
 
       char *first_arg = strtok(NULL, delim);
