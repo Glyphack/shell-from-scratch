@@ -139,7 +139,7 @@ int main() {
 
       printf("%s: not found\n", first_arg);
     } else {
-      char *foundCommand;
+      char *foundCommand = NULL;
       if (path_count > 0) {
         DIR *dir;
         struct dirent *dp;
@@ -165,7 +165,7 @@ int main() {
           closedir(dir);
         }
       }
-      if (foundCommand != 0){
+      if (foundCommand != NULL){
         char *token = strtok(NULL, delim);
         while (token != NULL) {
           strcat(foundCommand, " ");
