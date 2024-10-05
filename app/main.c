@@ -135,7 +135,6 @@ int main() {
 
           while ((dp = readdir(dir)) != NULL) {
             if (strcmp(commandName, dp->d_name) == 0) {
-              printf("%s is %s/%s\n", commandName, curr_path, dp->d_name);
               char newCommand[commandLen];
               strcpy(newCommand, curr_path);
               strcat(newCommand, "/");
