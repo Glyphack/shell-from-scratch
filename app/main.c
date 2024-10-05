@@ -1,5 +1,6 @@
 #include <dirent.h>
 #include <libgen.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,8 +16,29 @@ int main() {
       "print", "pwd",      "read",    "ulimit", "umask",    "unalias",
       "wait",  "whence",
   };
-  while (1) {
+
     char *path_env = getenv("PATH");
+    int path_count = 0;
+    if (path_env != NULL) {
+      path_count = 1;
+    }
+    for (int i=0;i < strlen(path_env);i++) {
+      if (path_env[i] == ':') path_count++;
+    }
+
+    fflush(stdout);
+
+    char *paths[path_count];
+
+    char* delim_env = ":";
+    char *curr_path = strtok(path_env, delim_env);
+    for (int i=0;i<path_count;i++) {
+      fflush(stdout);
+      paths[i] = curr_path;
+      curr_path = strtok(NULL, delim_env);
+    }
+
+  while (1) {
     printf("$ ");
     fflush(stdout);
 
@@ -75,25 +97,23 @@ int main() {
         continue;
       }
 
-      if (path_env != NULL) {
-        char *curr_path = strtok(path_env, ":");
-        while (curr_path != NULL) {
-          DIR *dir;
-          struct dirent *dp;
+      if (path_count > 0) {
+        DIR *dir;
+        struct dirent *dp;
+        for (int i=0;i<path_count;i++) {
+          curr_path = paths[i];
           if ((dir = opendir(curr_path)) == NULL) {
-            printf("reading %s ", curr_path);
-            fflush(stdout);
-            exit(1);
+            continue;
           }
 
           while ((dp = readdir(dir)) != NULL) {
-
             if (strcmp(first_arg, dp->d_name) == 0) {
               printf("%s is %s/%s\n", first_arg, curr_path, dp->d_name);
               found = 1;
             }
           }
-          curr_path = strtok(NULL, ":");
+          closedir(dir);
+          if (found == 1) break;
         }
       }
 
