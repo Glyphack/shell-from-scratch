@@ -89,6 +89,9 @@ int main() {
       printf("%s\n", ptr);
     } else if (strcmp(commandName, "cd") == 0) {
       char *location = strtok(NULL, " ");
+      if (strcmp(location, "~") == 0) {
+        location = getenv("HOME");
+      }
       if (location == NULL) exit(1);
       int status = chdir(location);
     if (status != 0) {
