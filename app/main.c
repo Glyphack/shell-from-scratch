@@ -1,11 +1,11 @@
 #include <dirent.h>
-#include <unistd.h>
-#include <libgen.h>
 #include <errno.h>
+#include <libgen.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 int main() {
   const char *builtin_commands[] = {
@@ -18,26 +18,27 @@ int main() {
       "wait",  "whence",
   };
 
-    char *path_env = getenv("PATH");
-    int path_count = 0;
-    if (path_env != NULL) {
-      path_count = 1;
-    }
-    for (int i=0;i < strlen(path_env);i++) {
-      if (path_env[i] == ':') path_count++;
-    }
+  char *path_env = getenv("PATH");
+  int path_count = 0;
+  if (path_env != NULL) {
+    path_count = 1;
+  }
+  for (int i = 0; path_env[i] != 0; i++) {
+    if (path_env[i] == ':')
+      path_count++;
+  }
 
+  fflush(stdout);
+
+  char *paths[path_count];
+
+  char *delim_env = ":";
+  char *curr_path = strtok(path_env, delim_env);
+  for (int i = 0; i < path_count; i++) {
     fflush(stdout);
-
-    char *paths[path_count];
-
-    char* delim_env = ":";
-    char *curr_path = strtok(path_env, delim_env);
-    for (int i=0;i<path_count;i++) {
-      fflush(stdout);
-      paths[i] = curr_path;
-      curr_path = strtok(NULL, delim_env);
-    }
+    paths[i] = curr_path;
+    curr_path = strtok(NULL, delim_env);
+  }
 
   while (1) {
     printf("$ ");
@@ -92,11 +93,12 @@ int main() {
       if (strcmp(location, "~") == 0) {
         location = getenv("HOME");
       }
-      if (location == NULL) exit(1);
+      if (location == NULL)
+        exit(1);
       int status = chdir(location);
-    if (status != 0) {
-        printf("cd: %s: No such file or directory\n",location);
-    }
+      if (status != 0) {
+        printf("cd: %s: No such file or directory\n", location);
+      }
     } else if (strcmp(commandName, "type") == 0) {
 
       char *first_arg = strtok(NULL, delim);
@@ -119,7 +121,7 @@ int main() {
       if (path_count > 0) {
         DIR *dir;
         struct dirent *dp;
-        for (int i=0;i<path_count;i++) {
+        for (int i = 0; i < path_count; i++) {
           curr_path = paths[i];
           if ((dir = opendir(curr_path)) == NULL) {
             continue;
@@ -132,7 +134,8 @@ int main() {
             }
           }
           closedir(dir);
-          if (found == 1) break;
+          if (found == 1)
+            break;
         }
       }
 
@@ -146,12 +149,12 @@ int main() {
       if (path_count > 0) {
         DIR *dir;
         struct dirent *dp;
-        for (int i=0;i<path_count;i++) {
+        for (int i = 0; i < path_count; i++) {
+          printf("path: %s\n", curr_path);
           curr_path = paths[i];
           if ((dir = opendir(curr_path)) == NULL) {
             continue;
           }
-
 
           while ((dp = readdir(dir)) != NULL) {
             if (strcmp(commandName, dp->d_name) == 0) {
@@ -161,14 +164,14 @@ int main() {
               strcat(newCommand, dp->d_name);
               foundCommand = malloc(strlen(newCommand) + 1);
               if (foundCommand != NULL) {
-                  strcpy(foundCommand, newCommand);
+                strcpy(foundCommand, newCommand);
               }
             }
           }
           closedir(dir);
         }
       }
-      if (foundCommand != NULL){
+      if (foundCommand != NULL) {
         char *token = strtok(NULL, delim);
         while (token != NULL) {
           strcat(foundCommand, " ");
